@@ -1,0 +1,7 @@
+{
+  "name": "y",
+  "version": "0.0.1",
+  "description": "leetcode in ts",
+  "main": "index.js",
+  "license": "MIT"
+}
