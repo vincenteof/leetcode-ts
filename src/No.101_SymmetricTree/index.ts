@@ -1,3 +1,5 @@
+import { TreeNode } from '../types'
+
 /**
  * Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
  * For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
@@ -60,18 +62,6 @@ function validate(values: TreeNodeWithForm[], length: number) {
     j--
   }
   return result
-}
-
-class TreeNode {
-  val: number
-  left: TreeNode | null
-  right: TreeNode | null
-
-  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
-    this.val = val === undefined ? 0 : val
-    this.left = left === undefined ? null : left
-    this.right = right === undefined ? null : right
-  }
 }
 
 interface TreeNodeWithForm extends TreeNode {

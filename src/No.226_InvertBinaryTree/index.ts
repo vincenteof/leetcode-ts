@@ -1,3 +1,5 @@
+import { TreeNode } from '../types'
+
 /**
  * Invert a binary tree.
  * @param root

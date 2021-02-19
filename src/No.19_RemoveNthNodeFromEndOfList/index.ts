@@ -1,3 +1,5 @@
+import { ListNode } from '../types'
+
 /**
  * Given the head of a linked list, remove the nth node from the end of the list and return its head.
  * Follow up: Could you do this in one pass?
@@ -35,12 +37,3 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
  * solution:
  * Make two two pointer, when the distance between them reaches n, move both.
  */
-
-class ListNode {
-  val: number
-  next: ListNode | null
-  constructor(val?: number, next?: ListNode | null) {
-    this.val = val === undefined ? 0 : val
-    this.next = next === undefined ? null : next
-  }
-}

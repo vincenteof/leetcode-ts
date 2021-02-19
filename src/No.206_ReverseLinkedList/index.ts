@@ -1,3 +1,5 @@
+import { ListNode } from '../types'
+
 /**
  * Reverse a singly linked list.
  * @param head
