@@ -6,5 +6,23 @@
  * @param target
  */
 function combinationSum(candidates: number[], target: number): number[][] {
-  return []
+  const result = []
+  function dfs(curTarget: number, combined: number[], idx: number) {
+    if (curTarget === 0) {
+      result.push(combined)
+      return
+    }
+    if (curTarget < 0 || idx === candidates.length) {
+      return
+    }
+    dfs(curTarget - candidates[idx], [...combined, candidates[idx]], idx)
+    dfs(curTarget, combined, idx + 1)
+  }
+  dfs(target, [], 0)
+  return result
 }
+
+/**
+ * solution:
+ * We can select one time any time or not select it.
+ */
