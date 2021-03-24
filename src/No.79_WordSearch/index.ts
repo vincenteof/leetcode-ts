@@ -9,8 +9,13 @@ function exist(board: string[][], word: string): boolean {
   const startChar = word[0]
   const m = board.length
   const n = board[0].length
+  if (word.length > m * n) {
+    return false
+  }
+  const records = []
   const possibleTargets = []
   for (let i = 0; i < m; i++) {
+    records.push([])
     for (let j = 0; j < n; j++) {
       if (board[i][j] === startChar) {
         possibleTargets.push([i, j])
@@ -18,57 +23,72 @@ function exist(board: string[][], word: string): boolean {
     }
   }
   let reached = false
-  function dfs(
-    start: [number, number],
-    str: string,
-    paths: Array<[number, number]>
-  ) {
+  function dfs(start: [number, number], str: string) {
     if (str === word) {
       reached = true
+      return
+    }
+    if (str.length === word.length && str !== word) {
       return
     }
     const top = start[0] - 1
     const down = start[0] + 1
     const right = start[1] + 1
     const left = start[1] - 1
-    if (top >= 0 && !contains(paths, [top, start[1]])) {
-      dfs([top, start[1]], str + board[top][start[1]], [
-        ...paths,
-        [top, start[1]],
-      ])
+    const curChar = word[str.length]
+    const topEq = top >= 0 && board[top][start[1]] === curChar
+    const downEq = down < m && board[down][start[1]] === curChar
+    const leftEq = left >= 0 && board[start[0]][left] === curChar
+    const rightEq = right < n && board[start[0]][right] === curChar
+
+    if (topEq && records[top][start[1]] === undefined) {
+      records[top][start[1]] = 0
+      dfs([top, start[1]], str + board[top][start[1]])
+      records[top][start[1]] = undefined
     }
-    if (down < m && !contains(paths, [down, start[1]])) {
-      dfs([down, start[1]], str + board[down][start[1]], [
-        ...paths,
-        [down, start[1]],
-      ])
+    if (reached) {
+      return
     }
-    if (left >= 0 && !contains(paths, [start[0], left])) {
-      dfs([start[0], left], str + board[start[0]][left], [
-        ...paths,
-        [start[0], left],
-      ])
+    if (downEq && records[down][start[1]] === undefined) {
+      records[down][start[1]] = 0
+      dfs([down, start[1]], str + board[down][start[1]])
+      records[down][start[1]] = undefined
     }
-    if (right < n && !contains(paths, [start[0], right])) {
-      dfs([start[0], right], str + board[start[0]][right], [
-        ...paths,
-        [start[0], right],
-      ])
+    if (reached) {
+      return
+    }
+    if (leftEq && records[start[0]][left] === undefined) {
+      records[start[0]][left] = 0
+      dfs([start[0], left], str + board[start[0]][left])
+      records[start[0]][left] = undefined
+    }
+    if (reached) {
+      return
+    }
+    if (rightEq && records[start[0]][right] === undefined) {
+      records[start[0]][right] = 0
+      dfs([start[0], right], str + board[start[0]][right])
+      records[start[0]][right] = undefined
+    }
+    if (reached) {
+      return
     }
   }
-  function contains(arr: Array<[number, number]>, target: [number, number]) {
-    for (const elem of arr) {
-      if (elem[0] === target[0] && elem[1] === target[1]) {
-        return true
-      }
-    }
-    return false
-  }
+
   for (const pair of possibleTargets) {
-    dfs(pair, board[pair[0]][pair[1]], [pair])
+    records[pair[0]][pair[1]] = 0
+    dfs(pair, board[pair[0]][pair[1]])
+    records[pair[0]][pair[1]] = undefined
+
     if (reached) {
       return true
     }
   }
   return false
 }
+
+/**
+ * solution:
+ * Use a array to record visited points.
+ * After each dfs, check whether reaches to pruning.
+ */
