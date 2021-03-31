@@ -37,3 +37,29 @@ function minPathSum(grid: number[][]): number {
  * Simple BFS solution has many duplicate computation.
  * Memorize previous result.
  */
+
+// function minPathSum(grid: number[][]): number {
+//   const m = grid.length
+//   const n = grid[0].length
+//   let min = Number.MAX_SAFE_INTEGER
+//   const queue = [[m - 1, n - 1, grid[m - 1][n - 1]]]
+//   while (queue.length > 0) {
+//     const cur = queue.pop()
+//     const [curM, curN, curSum] = cur
+//     if (curSum > min) {
+//       continue
+//     }
+//     if (curM === 0 && curN === 0 && curSum < min) {
+//       min = curSum
+//     }
+//     if (curM - 1 >= 0) {
+//       const newSum1 = curSum + grid[curM - 1][curN]
+//       queue.push([curM - 1, curN, newSum1])
+//     }
+//     if (curN - 1 >= 0) {
+//       const newSum2 = curSum + grid[curM][curN - 1]
+//       queue.push([curM, curN - 1, newSum2])
+//     }
+//   }
+//   return min
+// }
