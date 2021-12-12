@@ -21,3 +21,11 @@ export function binarySearch(
   }
   return -1
 }
+
+
+export function get<T>(matrix: T[][], i: number, j: number, initial?: T) {
+  if (i < 0 || i >= matrix.length) {
+    return initial
+  }
+  return matrix[i][j] || initial
+}
