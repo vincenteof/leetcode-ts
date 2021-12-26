@@ -26,16 +26,15 @@ class LRUCache {
   }
 
   _removeOldest() {
+    const key = this.head.key
     if (this.kv.size === 1) {
-      this.kv.delete(this.head.key)
       this.head = undefined
       this.tail = undefined
-      return
+    } else {
+      const nextHead = this.head.next
+      nextHead.prev = undefined
+      this.head = nextHead
     }
-    const key = this.head.key
-    const nextHead = this.head.next
-    nextHead.prev = undefined
-    this.head = nextHead
     this.kv.delete(key)
   }
 
@@ -78,30 +77,24 @@ class LRUCache {
       key,
       value,
     }
+    if (this.kv.size === this.capacity && !this.kv.has(key)) {
+      this._removeOldest()
+    }
     if (this.kv.size === 0) {
       this.head = newNode
       this.tail = newNode
       this.kv.set(key, newNode)
       return
-    }
-    if (this.kv.size === this.capacity && !this.kv.has(key)) {
-      this._removeOldest()
     }
     if (this.kv.has(key)) {
       const targetNode = this._touchToNewest(key)
       targetNode.value = value
-      return
-    }
-    if (this.kv.size === 0) {
-      this.head = newNode
+    } else {
+      this.tail.next = newNode
+      newNode.prev = this.tail
       this.tail = newNode
       this.kv.set(key, newNode)
-      return
     }
-    this.tail.next = newNode
-    newNode.prev = this.tail
-    this.tail = newNode
-    this.kv.set(key, newNode)
   }
 }
 

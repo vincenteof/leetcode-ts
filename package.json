@@ -5,6 +5,11 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^16.6.1"
+    "@types/node": "^16.6.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.4"
+  },
+  "scripts": {
+    "run-case": "./scripts/run-case.js"
   }
 }
