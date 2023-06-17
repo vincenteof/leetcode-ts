@@ -3,23 +3,43 @@
  */
 
 function canPartition(nums: number[]): boolean {
-    const sum = nums.reduce((acc, cur) => acc + cur) / 2
-    const target = Math.round(sum)
-    if (target * 2 !== sum) {
-        return false;
+  let total = 0;
+  let maxNum = 0;
+  for (let i = 0; i < nums.length; i++) {
+    total += nums[i];
+    if (nums[i] > maxNum) {
+      maxNum = nums[i];
     }
-    const dp = [true]
-    for (let i = 1; i <= target; i++) {
-        let result = false
-        for (const num of nums) {
-            if (num <= i) {
-                result = dp[i - num]
-            }
-            if (result) {
-                break
-            }
-        }
-        dp[i] = result
+  }
+  const target = Math.floor(total / 2);
+  // cut edge
+  if (maxNum > target) {
+    return false;
+  }
+  if (target * 2 !== total) {
+    return false;
+  }
+
+  const dp = Array(nums.length)
+    .fill(0)
+    .map(() => {
+      return Array(target + 1).fill(false);
+    });
+  for (let i = 0; i < nums.length; i++) {
+    dp[i][0] = true;
+  }
+  dp[0][nums[0]] = true;
+
+  for (let i = 1; i < nums.length; i++) {
+    for (let j = 1; j <= target; j++) {
+      if (nums[i] < j) {
+        dp[i][j] = dp[i - 1][j - nums[i]] || dp[i - 1][j];
+      } else {
+        dp[i][j] = dp[i - 1][j];
+      }
     }
-    return dp[target]
-};
+  }
+  return dp[nums.length - 1][target];
+}
+
+// dp[i][j] = dp[i-1][j-nums[i]] || dp[i-1][j]
